@@ -17,6 +17,11 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
+  data:
+    web:
+      pageable:
+        max-page-size: 100
+
   # Usuario para HTTP Basic (crear y cancelar). Sobrescribible con variables de entorno.
   security:
     user:

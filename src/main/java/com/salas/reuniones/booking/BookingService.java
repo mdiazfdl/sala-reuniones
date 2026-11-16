@@ -1,16 +1,18 @@
 package com.salas.reuniones.booking;
 
-import com.salas.reuniones.common.ConflictException;
-import com.salas.reuniones.common.NotFoundException;
 import com.salas.reuniones.booking.dto.BookingResponse;
 import com.salas.reuniones.booking.dto.CreateBookingRequest;
+import com.salas.reuniones.common.ConflictException;
+import com.salas.reuniones.common.NotFoundException;
+import com.salas.reuniones.common.PageResponse;
 import com.salas.reuniones.room.Room;
 import com.salas.reuniones.room.RoomRepository;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Service
 public class BookingService {
@@ -51,9 +53,8 @@ public class BookingService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookingResponse> findAll() {
-        return bookingRepository.findAll(Sort.by("start")).stream()
-                .map(BookingResponse::from)
-                .toList();
+    public PageResponse<BookingResponse> search(Long roomId, LocalDate date, Pageable pageable) {
+        Page<Booking> page = bookingRepository.findAll(BookingSpecifications.filter(roomId, date), pageable);
+        return PageResponse.from(page.map(BookingResponse::from));
     }
 }
