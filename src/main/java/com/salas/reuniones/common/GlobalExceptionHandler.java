@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -35,6 +36,13 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleUnreadable(HttpMessageNotReadableException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
                 "El cuerpo de la petición está mal formado o tiene un formato incorrecto (revisa las fechas, formato ISO: 2030-01-10T09:00:00)");
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ProblemDetail handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        String expected = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "valor válido";
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+                "El parámetro '" + ex.getName() + "' debe ser de tipo " + expected + " (valor recibido: '" + ex.getValue() + "')");
     }
 
     @ExceptionHandler(NotFoundException.class)
