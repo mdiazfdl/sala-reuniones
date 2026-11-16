@@ -24,6 +24,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll() // Spring reenvía aquí los errores 4xx/5xx
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/**").permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());

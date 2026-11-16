@@ -35,6 +35,15 @@ mvn spring-boot:run -Dspring-boot.run.profiles=postgres
 
 Flyway aplica las migraciones al arrancar en ambos motores.
 
+## Swagger UI
+
+Con la aplicación en marcha, la documentación interactiva está en:
+
+- Swagger UI: http://localhost:8080/swagger-ui/index.html
+- Especificación OpenAPI (JSON): http://localhost:8080/v3/api-docs
+
+Para probar los endpoints de escritura, pulsa **Authorize** e introduce `admin` / `admin123`.
+
 ## Endpoints
 
 | Método | Ruta | Auth | Descripción |
